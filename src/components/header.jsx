@@ -2,16 +2,16 @@ import UserData from "./userData";
 
 export default function Header() {
   return (
-    <div className="bg-red-500">
-      <h1 className="text-[20px] font-bold text-blue-700">
-        Crystal Beauty Clear
-      </h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore
-        laboriosam repellendus, soluta temporibus perspiciatis praesentium
-        minima, ipsa perferendis suscipit dolorum esse harum nostrum beatae
-        provident! Dolorum mollitia reprehenderit dolorem quis.
-      </p>
+    <div className="bg-blue-800">
+      <a href="/" className="text-white font-bold px-4">
+        Home
+      </a>
+      <a href="/login" className="text-white font-bold px-4">
+        Login
+      </a>
+      <a href="/signup" className="text-white font-bold px-4">
+        Sign Up
+      </a>
       <UserData />
     </div>
   );
