@@ -1,18 +1,11 @@
-import UserData from "./userData";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
     <div className="bg-blue-800">
-      <a href="/" className="text-white font-bold px-4">
-        Home
-      </a>
-      <a href="/login" className="text-white font-bold px-4">
-        Login
-      </a>
-      <a href="/signup" className="text-white font-bold px-4">
-        Sign Up
-      </a>
-      <UserData />
+      <Link to="/">Home</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/signup">Sign Up</Link>
     </div>
   );
 }
