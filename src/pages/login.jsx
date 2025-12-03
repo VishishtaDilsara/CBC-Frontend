@@ -8,10 +8,13 @@ export default function LoginPage() {
 
   async function handleLogin() {
     try {
-      const response = await axios.post("http://localhost:3000/users/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/users/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       toast.success(response.data.message);
       console.log(response.data.message);
     } catch (err) {
