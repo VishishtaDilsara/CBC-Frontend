@@ -1,5 +1,6 @@
 import { Link, Route, Routes } from "react-router-dom";
 import AdminProductsPage from "./admin/adminProductsPage";
+import AddProductPage from "./admin/addProductPage";
 
 export default function AdminPage() {
   return (
@@ -14,7 +15,7 @@ export default function AdminPage() {
           <Route path="/products" element={<AdminProductsPage />} />
           <Route path="/users" element={<h1>Admin Users Page</h1>} />
           <Route path="/orders" element={<h1>Admin Orders Page</h1>} />
-          <Route path="/*" element={<h1>Admin 404: Page Not Found</h1>} />
+          <Route path="/add-product" element={<AddProductPage />} />
         </Routes>
       </div>
     </div>
