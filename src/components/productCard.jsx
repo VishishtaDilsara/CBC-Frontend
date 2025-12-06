@@ -1,6 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function ProductCard({ product }) {
   return (
-    <div className="w-[300px] h-[400px] bg-white shadow-lg rounded-xl m-2 flex flex-col overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+    <Link
+      to={"/overview/" + product.productId}
+      className="w-[300px] h-[400px] bg-white shadow-lg rounded-xl m-2 flex flex-col overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+    >
       {/* Product Image */}
       <div className="h-[50%] w-full overflow-hidden bg-gray-100 flex items-center justify-center">
         {product.images && product.images.length > 0 ? (
@@ -63,6 +68,6 @@ export default function ProductCard({ product }) {
           Buy Now
         </button>
       </div>
-    </div>
+    </Link>
   );
 }
