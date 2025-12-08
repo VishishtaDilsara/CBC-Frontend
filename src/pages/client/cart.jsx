@@ -1,12 +1,28 @@
 import { useState } from "react";
-import { getCart } from "../../utils/cart";
+import { addToCart, getCart, getTotal, removeFromCart } from "../../utils/cart";
 import { BiMinus, BiPlus, BiTrash } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 export default function CartPage() {
   const [cart, setCart] = useState(getCart());
 
   return (
-    <div className="w-full h-full flex flex-col items-center pt-4">
+    <div className="w-full h-full flex flex-col items-center pt-4 relative">
+      <div className="w-[300px] h-[80px] shadow-2xl absolute top-1 right-1 flex flex-col justify-center items-center">
+        <p className="text-2xl text-secondary font-bold ">
+          {" "}
+          Total:
+          <span className="text-accent font-bold mx-2">
+            {getTotal().toFixed(2)}
+          </span>
+        </p>
+        <Link
+          to="/checkout"
+          className="text-white bg-accent px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300"
+        >
+          Checkout
+        </Link>
+      </div>
       {cart.map((item) => {
         return (
           <div
@@ -40,13 +56,25 @@ export default function CartPage() {
               )}
             </div>
             <div className="w-[100px] h-full flex flex-row justify-between items-center ">
-              <button className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent ">
+              <button
+                className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent "
+                onClick={() => {
+                  addToCart(item, -1);
+                  setCart(getCart());
+                }}
+              >
                 <BiMinus />
               </button>
               <h1 className="text-xl text-secondary font-semibold h-full flex items-center">
                 {item.qty}
               </h1>
-              <button className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent ">
+              <button
+                className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent "
+                onClick={() => {
+                  addToCart(item, 1);
+                  setCart(getCart());
+                }}
+              >
                 <BiPlus />
               </button>
             </div>
@@ -56,7 +84,13 @@ export default function CartPage() {
                 Rs. {(item.price * item.qty).toFixed(2)}
               </span>
             </div>
-            <button className="absolute text-red-600 cursor-pointer hover:bg-red-600 hover:text-white rounded-full p-2 right-[-40px]">
+            <button
+              className="absolute text-red-600 cursor-pointer hover:bg-red-600 hover:text-white rounded-full p-2 right-[-40px]"
+              onClick={() => {
+                removeFromCart(item.productId);
+                setCart(getCart());
+              }}
+            >
               <BiTrash />
             </button>
           </div>
