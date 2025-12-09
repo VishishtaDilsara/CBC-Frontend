@@ -7,35 +7,56 @@ import EditProductPage from "./admin/editProductPage";
 export default function AdminPage() {
   const location = useLocation();
   const path = location.pathname;
+
   function getClass(name) {
-    if (path.includes(name)) {
-      return "bg-accent text-white";
-    } else {
-      return "text-accent";
-    }
+    const isActive = path.includes(name);
+    return `
+      flex items-center rounded-md px-4 py-3 font-semibold transition
+      ${isActive ? "bg-accent text-white" : "text-accent hover:bg-accent/10"}
+    `;
   }
+
   return (
-    <div className="w-full h-screen flex">
-      <div className="h-full w-[300px] text-accent font-bold px-4 text-xl gap-5 flex flex-col">
+    <div className="w-full h-screen flex bg-gray-50">
+      {/* Sidebar */}
+      <aside className="h-full w-[260px] bg-white shadow-md py-8 flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-accent px-4 mb-6">
+          Admin Panel
+        </h1>
+
         <Link className={getClass("products")} to="/admin/products">
           Products
         </Link>
+
         <Link className={getClass("users")} to="/admin/users">
           Users
         </Link>
+
         <Link className={getClass("orders")} to="/admin/orders">
           Orders
         </Link>
-      </div>
-      <div className="h-full w-[calc(100%-300px)] ">
-        <Routes path="/*">
+
+        <Link className={getClass("add-product")} to="/admin/add-product">
+          Add Product
+        </Link>
+      </aside>
+
+      {/* Content Area */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        <Routes>
           <Route path="/products" element={<AdminProductsPage />} />
-          <Route path="/users" element={<h1>Admin Users Page</h1>} />
-          <Route path="/orders" element={<h1>Admin Orders Page</h1>} />
+          <Route
+            path="/users"
+            element={<h1 className="text-3xl font-bold">Admin Users Page</h1>}
+          />
+          <Route
+            path="/orders"
+            element={<h1 className="text-3xl font-bold">Admin Orders Page</h1>}
+          />
           <Route path="/add-product" element={<AddProductPage />} />
           <Route path="/edit-product" element={<EditProductPage />} />
         </Routes>
-      </div>
+      </main>
     </div>
   );
 }
