@@ -1,12 +1,19 @@
+import { useState } from "react";
 import { BsCart3 } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const [sideDrawerOpened, setSideDrawerOpened] = useState(false);
   const navigate = useNavigate();
   return (
     <header className="w-full h-[80px] shadow-2xl flex justify-center relative">
-      <GiHamburgerMenu className="h-full mx-4 text-3xl md:hidden absolute left-2" />
+      <GiHamburgerMenu
+        className="h-full mx-4 text-3xl md:hidden absolute left-2"
+        onClick={() => {
+          setSideDrawerOpened(true);
+        }}
+      />
       <img
         onClick={() => {
           navigate("/");
@@ -34,6 +41,45 @@ export default function Header() {
           <BsCart3 />
         </Link>
       </div>
+      {sideDrawerOpened && (
+        <div className="fixed h-screen w-full bg-[#00000060] flex md:hidden">
+          <div className="w-[350px] bg-white h-full">
+            <div className="w-full h-[80px] shadow-2xl flex justify-center items-center">
+              <GiHamburgerMenu
+                className="h-full mx-4 text-3xl absolute left-2 cursor-pointer"
+                onClick={() => {
+                  setSideDrawerOpened(false);
+                }}
+              />
+              <img
+                onClick={() => {
+                  window.location.href = "/";
+                }}
+                src="/logo.png"
+                alt="logo"
+                className="w-[70px] h-[70px]  top-0 left-0 m-2 object-cover cursor-pointer"
+              />
+            </div>
+            <div className="w-full h-[calc(100%-80px)] flex flex-col gap-2 items-center">
+              <a href="/" className="text-[20px] font-bold mx-2 my-4">
+                Home
+              </a>
+              <a href="/products" className="text-[20px] font-bold mx-2 my-4">
+                Products
+              </a>
+              <a href="/about" className="text-[20px] font-bold mx-2 my-4">
+                About
+              </a>
+              <a href="/contact" className="text-[20px] font-bold mx-2 my-4">
+                Contact
+              </a>
+              <a href="/cart" className="text-[20px] font-bold mx-2 my-4">
+                <BsCart3 />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

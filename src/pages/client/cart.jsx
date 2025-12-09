@@ -8,7 +8,7 @@ export default function CartPage() {
 
   return (
     <div className="w-full h-full flex flex-col items-center pt-4 relative">
-      <div className="w-[300px] h-[80px] shadow-2xl absolute top-1 right-1 flex flex-col justify-center items-center">
+      <div className="w-[300px] hidden md:flex h-[80px] shadow-2xl absolute md:top-1 bottom-1 right-1 flex flex-col justify-center items-center">
         <p className="text-2xl text-secondary font-bold ">
           {" "}
           Total:
@@ -30,13 +30,13 @@ export default function CartPage() {
         return (
           <div
             key={item.productId}
-            className="w-[600px] h-[100px] bg-primary shadow-2xl flex flex-row rounded-tl-2xl rounded-bl-2xl mb-4 relative justify-center items-center"
+            className="w-[70%] md:w-[600px] md:h-[100px] bg-primary shadow-2xl flex md:flex-row flex-col rounded-tl-2xl rounded-bl-2xl mb-4 relative justify-center items-center p-2 md:p-0"
           >
             <img
               src={item.images}
               className="w-[100px] h-[100px] object-cover rounded-2xl "
             />
-            <div className="w-[250px] h-full flex flex-col justify-center items-start pl-4">
+            <div className="w-[250px] h-full flex flex-col  justify-center items-center md:items-start pl-4">
               <h1 className="text-xl text-secondary font-semibold">
                 {item.name}
               </h1>
@@ -99,6 +99,24 @@ export default function CartPage() {
           </div>
         );
       })}
+      <div className="w-full md:w-[300px]  md:hidden h-[80px] shadow-2xl   flex flex-col justify-center items-center">
+        <p className="text-2xl text-secondary font-bold ">
+          {" "}
+          Total:
+          <span className="text-accent font-bold mx-2">
+            {getTotal().toFixed(2)}
+          </span>
+        </p>
+        <Link
+          to="/checkout"
+          state={{
+            cart: cart,
+          }}
+          className="text-white bg-accent px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300"
+        >
+          Checkout
+        </Link>
+      </div>
     </div>
   );
 }

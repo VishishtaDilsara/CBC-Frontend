@@ -31,13 +31,26 @@ export default function ProductOverviewPage() {
   return (
     <>
       {status == "success" && (
-        <div className="w-full h-full flex">
-          <div className="w-[50%] h-full flex justify-center items-center">
+        <div className="w-full h-full flex flex-col md:flex-row items-center">
+          <h1 className="w-full md:hidden my-8 text-center text-3xl font-semibold text-secondary">
+            {product.name}
+            {product.altNames.map((altName, index) => {
+              return (
+                <span
+                  key={index}
+                  className="text-gray-600 font-normal text-3xl"
+                >
+                  {" | " + altName}
+                </span>
+              );
+            })}
+          </h1>
+          <div className="w-full md:w-[50%] h-full flex justify-center items-center">
             <ImageSlider images={product.images} />
           </div>
           <div className="w-[50%] h-full flex justify-center items-center">
             <div className="w-[600px] h-[500px] flex flex-col  items-center">
-              <h1 className="w-full text-center text-3xl font-semibold text-secondary">
+              <h1 className="w-full hidden md:block text-center text-3xl font-semibold text-secondary">
                 {product.name}
                 {product.altNames.map((altName, index) => {
                   return (
@@ -70,7 +83,7 @@ export default function ProductOverviewPage() {
                   {product.price.toFixed(2)}
                 </span>
               )}
-              <div className="w-full flex justify-center items-center mt-4">
+              <div className="w-full flex justify-center items-center mt-4 flex-col md:flex-row gap-2">
                 <button
                   className="w-[200px] h-[50px] mx-4 bg-accent cursor-pointer text-white font-semibold rounded-2xl hover:bg-accent/80 transition-all duration-300"
                   onClick={() => {
