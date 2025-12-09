@@ -115,6 +115,55 @@ export default function AdminOrdersPage() {
                         >
                           {activeOrderData.status}
                         </span>
+                        <div className="mt-3 flex flex-col">
+                          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                            Change Status
+                          </label>
+
+                          <select
+                            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none 
+               focus:ring-2 focus:ring-accent focus:border-accent bg-white cursor-pointer"
+                            defaultValue=""
+                            onChange={async (e) => {
+                              const updatedValue = e.target.value;
+                              try {
+                                const token = localStorage.getItem("token");
+
+                                await axios.put(
+                                  import.meta.env.VITE_BACKEND_URL +
+                                    "/api/orders/" +
+                                    activeOrderData.orderId +
+                                    "/" +
+                                    updatedValue,
+                                  {},
+                                  {
+                                    headers: {
+                                      Authorization: "Bearer " + token,
+                                    },
+                                  }
+                                );
+
+                                toast.success("Order status updated");
+                                setIsModalOpen(false);
+                                setIsLoading(true);
+                                setIsModalOpen(true);
+                              } catch (err) {
+                                toast.error(
+                                  err?.response?.data?.message ||
+                                    "Something went wrong"
+                                );
+                              }
+                            }}
+                          >
+                            <option value="" disabled>
+                              Select new status
+                            </option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Returned">Returned</option>
+                          </select>
+                        </div>
                       </div>
                       <div className="flex flex-col">
                         <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
