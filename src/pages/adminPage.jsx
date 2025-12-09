@@ -3,6 +3,7 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import AddProductPage from "./admin/addProductPage";
 import AdminProductsPage from "./admin/productsPage";
 import EditProductPage from "./admin/editProductPage";
+import AdminOrdersPage from "./admin/adminOrdersPage";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -49,10 +50,7 @@ export default function AdminPage() {
             path="/users"
             element={<h1 className="text-3xl font-bold">Admin Users Page</h1>}
           />
-          <Route
-            path="/orders"
-            element={<h1 className="text-3xl font-bold">Admin Orders Page</h1>}
-          />
+          <Route path="/orders" element={<AdminOrdersPage />} />
           <Route path="/add-product" element={<AddProductPage />} />
           <Route path="/edit-product" element={<EditProductPage />} />
         </Routes>
