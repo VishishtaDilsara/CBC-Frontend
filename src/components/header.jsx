@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { BsCart3 } from "react-icons/bs";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link, useNavigate } from "react-router-dom";
@@ -6,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Header() {
   const [sideDrawerOpened, setSideDrawerOpened] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   return (
     <header className="w-full h-[80px] shadow-2xl flex justify-center relative">
       <GiHamburgerMenu
@@ -40,6 +42,25 @@ export default function Header() {
         </Link>
       </div>
       <div className="w-[80px] hidden md:flex flex justify-center items-center">
+        {token == null ? (
+          <Link to="/login" className=" text-[20px] font-bold mx-2">
+            {" "}
+            Login{" "}
+          </Link>
+        ) : (
+          <button
+            className="text-[20px] font-bold mx-2"
+            onClick={() => {
+              toast.success("Logout Successfull");
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              window.location.href = "/";
+            }}
+          >
+            {" "}
+            Logout{" "}
+          </button>
+        )}
         <Link to="/cart" className=" text-[20px] font-bold mx-2">
           <BsCart3 />
         </Link>
