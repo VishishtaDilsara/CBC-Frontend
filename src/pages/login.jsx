@@ -1,12 +1,20 @@
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { GrGoogle } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (response) => {
+      console.log(response);
+    },
+  });
 
   async function handleLogin() {
     try {
@@ -55,6 +63,14 @@ export default function LoginPage() {
             className="w-[300px] cursor-pointer h-[50px] bg-[#c3efe9] rounded-[20px] text-[20px] font-bold text-white my-5"
           >
             Login
+          </button>
+
+          <button
+            onClick={googleLogin}
+            className="w-[300px] cursor-pointer h-[50px] bg-[#c3efe9] rounded-[20px] text-[20px] font-bold text-white flex items-center justify-center gap-2 my-5"
+          >
+            <GrGoogle className="text-white" />
+            Login with Google
           </button>
         </div>
       </div>
