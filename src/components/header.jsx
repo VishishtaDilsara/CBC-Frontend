@@ -41,15 +41,18 @@ export default function Header() {
           Search
         </Link>
       </div>
-      <div className="w-[80px] hidden md:flex flex justify-center items-center">
+      <div className="w-[160px] hidden md:flex flex justify-center items-center">
         {token == null ? (
-          <Link to="/login" className=" text-[20px] font-bold mx-2">
+          <Link
+            to="/login"
+            className=" text-[20px] font-bold mx-2 cursor-pointer"
+          >
             {" "}
             Login{" "}
           </Link>
         ) : (
           <button
-            className="text-[20px] font-bold mx-2"
+            className="text-[20px] font-bold mx-2 cursor-pointer"
             onClick={() => {
               toast.success("Logout Successfull");
               localStorage.removeItem("token");
