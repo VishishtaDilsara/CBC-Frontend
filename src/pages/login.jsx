@@ -12,7 +12,21 @@ export default function LoginPage() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: (response) => {
-      console.log(response);
+      const accessToken = response.access_token;
+      axios
+        .post(import.meta.env.VITE_BACKEND_URL + "/api/users/login/google", {
+          accessToken: accessToken,
+        })
+        .then((res) => {
+          toast.success("login Successfull");
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          if (res.data.role === "admin") {
+            navigate("/admin/");
+          } else {
+            navigate("/");
+          }
+        });
     },
   });
 
