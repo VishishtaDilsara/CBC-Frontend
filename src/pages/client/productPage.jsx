@@ -5,6 +5,7 @@ import ProductCard from "../../components/productCard";
 export default function ProductPage() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (isLoading) {
       axios
@@ -17,7 +18,7 @@ export default function ProductPage() {
   }, [isLoading]);
 
   return (
-    <div className="w-full h-full  flex flex-wrap justify-center items-center">
+    <div className="w-full min-h-screen bg-primary py-10 flex flex-wrap justify-center gap-6 px-4">
       {products.map((product) => {
         return <ProductCard key={product.productId} product={product} />;
       })}

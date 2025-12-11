@@ -44,7 +44,7 @@ export default function HomePageDefault() {
 
           <div className="mt-8 flex gap-4">
             <Link
-              to="/products" // or /shop if that's your route
+              to="/products"
               className="px-6 py-3 rounded-full bg-accent text-white font-semibold shadow-md hover:bg-accent/90 transition"
             >
               Shop Now
@@ -98,7 +98,8 @@ export default function HomePageDefault() {
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-10">
           <div className="flex-1">
             <img
-              src="https://images.pexels.com/photos/1830439/pexels-photo-1830439.jpeg"
+              src="/philosophy.png"
+              alt="Philosophy"
               className="rounded-2xl shadow-lg w-full h-[350px] object-cover"
             />
           </div>
