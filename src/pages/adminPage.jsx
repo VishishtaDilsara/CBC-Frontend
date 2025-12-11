@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Loading from "../components/loading";
 import UsersPage from "./admin/usersPage";
 import AddUserPage from "./admin/addUserPage";
+import EditUserPage from "./admin/editUserPage";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -92,6 +93,7 @@ export default function AdminPage() {
               <Route path="/orders" element={<AdminOrdersPage />} />
               <Route path="/add-product" element={<AddProductPage />} />
               <Route path="/edit-product" element={<EditProductPage />} />
+              <Route path="/edit-user" element={<EditUserPage />} />
               <Route path="/add-user" element={<AddUserPage />} />
             </Routes>
           </main>
