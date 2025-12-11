@@ -141,6 +141,16 @@ export default function LoginPage() {
             <GrGoogle className="text-red-500" />
             Login with Google
           </button>
+          {/* New Here? Create Account */}
+          <div className="mt-6 text-sm text-gray-600">
+            New here?{" "}
+            <span
+              className="text-accent font-semibold cursor-pointer hover:underline"
+              onClick={() => navigate("/signup")}
+            >
+              Create an account
+            </span>
+          </div>
         </div>
       </div>
     </div>
