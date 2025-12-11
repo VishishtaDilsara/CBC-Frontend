@@ -48,42 +48,97 @@ export default function LoginPage() {
         navigate("/");
       }
     } catch (err) {
-      toast.error(err.response.data.message);
+      toast.error(err.response?.data?.message || "Login failed");
     }
   }
 
   return (
-    <div className="w-full h-screen bg-[url('/login.jpg')] bg-center bg-cover flex  justify-evenly items-center ">
-      <div className="w-[50%] h-full "></div>
-      <div className="w-[50%] h-full flex justify-center items-center">
-        <div className="w-[500px] h-[600px] backdrop-blur-lg rounded-[20px] shadow-xl flex flex-col justify-center items-center">
-          <input
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            value={email}
-            className="w-[300px] h-[50px] border border-[#c3efe9] rounded-[20px] my-5"
-          />
-          <input
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            value={password}
-            className="w-[300px] h-[50px] border border-[#c3efe9] rounded-[20px] mb-5"
-          />
+    <div className="w-full h-screen bg-[url('/login.jpg')] bg-cover bg-center flex items-center justify-center">
+      {/* overlay */}
+      <div className="w-full h-full bg-black/40 absolute inset-0" />
+
+      {/* content */}
+      <div className="relative z-10 w-full max-w-5xl flex flex-col md:flex-row items-center justify-between px-6">
+        {/* Left text / branding (optional) */}
+        <div className="hidden md:flex flex-col text-white max-w-md">
+          <h1 className="text-4xl font-bold tracking-tight">
+            Welcome back to <span className="text-accent">BeautyGlow</span>
+          </h1>
+          <p className="mt-4 text-sm text-gray-200 leading-relaxed">
+            Sign in to continue your journey with premium skincare and cosmetics
+            crafted to make you feel confident, radiant, and effortlessly
+            beautiful.
+          </p>
+        </div>
+
+        {/* Right: Login card */}
+        <div className="w-full md:w-[420px] bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl px-8 py-10 flex flex-col items-center">
+          <h2 className="text-2xl font-semibold text-secondary mb-2">
+            Sign in
+          </h2>
+          <p className="text-sm text-gray-500 mb-6">
+            Enter your details to access your account.
+          </p>
+
+          {/* Email */}
+          <div className="w-full mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <input
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              value={email}
+              placeholder="you@example.com"
+              className="w-full h-11 px-3 rounded-xl border border-gray-300 text-sm
+                         bg-white/80 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="w-full mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              value={password}
+              placeholder="••••••••"
+              className="w-full h-11 px-3 rounded-xl border border-gray-300 text-sm
+                         bg-white/80 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
+            />
+          </div>
+
+          {/* Login button */}
           <button
             onClick={handleLogin}
-            className="w-[300px] cursor-pointer h-[50px] bg-[#c3efe9] rounded-[20px] text-[20px] font-bold text-white my-5"
+            className="w-full h-11 rounded-full bg-accent text-white text-sm font-semibold 
+                       cursor-pointer mb-4 shadow-md hover:bg-accent/90 active:scale-95 
+                       transition-all duration-200"
           >
             Login
           </button>
 
+          {/* Divider */}
+          <div className="w-full flex items-center my-3">
+            <div className="flex-1 h-[1px] bg-gray-200" />
+            <span className="px-3 text-xs text-gray-400">or continue with</span>
+            <div className="flex-1 h-[1px] bg-gray-200" />
+          </div>
+
+          {/* Google login */}
           <button
             onClick={googleLogin}
-            className="w-[300px] cursor-pointer h-[50px] bg-[#c3efe9] rounded-[20px] text-[20px] font-bold text-white flex items-center justify-center gap-2 my-5"
+            className="w-full h-11 rounded-full border border-gray-300 bg-white/90 
+                       text-sm font-semibold text-gray-700 flex items-center justify-center gap-2 
+                       cursor-pointer hover:bg-gray-50 active:scale-95 transition-all duration-200"
           >
-            <GrGoogle className="text-white" />
+            <GrGoogle className="text-red-500" />
             Login with Google
           </button>
         </div>

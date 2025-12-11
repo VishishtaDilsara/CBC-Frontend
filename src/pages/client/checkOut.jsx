@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { BiMinus, BiPlus, BiTrash } from "react-icons/bi";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function CheckOutPage() {
   const location = useLocation();
@@ -10,6 +10,7 @@ export default function CheckOutPage() {
   const [cart, setCart] = useState(location.state.cart || []);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
+  const navigate = useNavigate();
 
   function getTotal() {
     let total = 0;
@@ -67,6 +68,7 @@ export default function CheckOutPage() {
         }
       );
       toast.success("Order Placed Successfully");
+      navigate("/");
       console.log(res.data);
     } catch (err) {
       toast.error("Error Placing Order");
@@ -76,112 +78,160 @@ export default function CheckOutPage() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col items-center pt-4 relative">
-      <div className="w-[300px] px-3 gap-2 py-2 shadow-2xl absolute top-1 right-1 flex flex-col justify-center items-center">
-        <p className="text-2xl text-secondary font-bold ">
-          {" "}
-          Total:
-          <span className="text-accent font-bold mx-2">
-            {getTotal().toFixed(2)}
-          </span>
-        </p>
-        <input
-          type="text"
-          className="w-full h-10 px-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChange={(e) => {
-            setPhoneNumber(e.target.value);
-          }}
-        />
-        <input
-          type="text"
-          className="w-full h-10 px-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => {
-            setAddress(e.target.value);
-          }}
-        />
-        <button
-          className="text-white bg-accent px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300"
-          onClick={() => {
-            placeOrder();
-          }}
-        >
-          Place Order
-        </button>
-      </div>
-      {cart.map((item, index) => {
-        return (
-          <div
-            key={item.productId}
-            className="w-[600px] h-[100px] bg-primary shadow-2xl flex flex-row rounded-tl-2xl rounded-bl-2xl mb-4 relative justify-center items-center"
-          >
-            <img
-              src={item.images}
-              className="w-[100px] h-[100px] object-cover rounded-2xl "
-            />
-            <div className="w-[250px] h-full flex flex-col justify-center items-start pl-4">
-              <h1 className="text-xl text-secondary font-semibold">
-                {item.name}
-              </h1>
-              <h1 className="text-sm text-gray-600 font-semibold">
-                {item.productId}
-              </h1>
-              {item.labelledPrice > item.price ? (
-                <div>
-                  <span className="text-md mx-1 text-gray-500 font-semibold line-through">
-                    {item.labelledPrice.toFixed(2)}
-                  </span>
-                  <span className="text-md mx-1 text-accent font-bold">
-                    {item.price.toFixed(2)}
+    <div className="w-full min-h-screen bg-primary flex justify-center items-start py-10 px-4">
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6">
+        {/* LEFT: Cart items */}
+        <div className="flex flex-col gap-4">
+          {cart.map((item, index) => {
+            return (
+              <div
+                key={item.productId}
+                className="w-full bg-white shadow-md rounded-2xl flex flex-col md:flex-row items-center gap-4 p-4 border border-gray-100 relative"
+              >
+                {/* Image */}
+                <div className="flex-shrink-0">
+                  <img
+                    src={item.images}
+                    className="w-[90px] h-[90px] object-cover rounded-2xl"
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 flex flex-col justify-center md:items-start items-center">
+                  <h1 className="text-lg md:text-xl text-secondary font-semibold text-center md:text-left">
+                    {item.name}
+                  </h1>
+                  <h1 className="text-xs md:text-sm text-gray-500 font-medium mt-1">
+                    {item.productId}
+                  </h1>
+
+                  {item.labelledPrice > item.price ? (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-sm text-gray-400 font-semibold line-through">
+                        Rs. {item.labelledPrice.toFixed(2)}
+                      </span>
+                      <span className="text-base text-accent font-bold">
+                        Rs. {item.price.toFixed(2)}
+                      </span>
+                    </div>
+                  ) : (
+                    <span className="mt-2 text-base text-accent font-bold">
+                      Rs. {item.price.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Quantity controls */}
+                <div className="flex items-center gap-3">
+                  <button
+                    className="text-white font-bold rounded-xl bg-accent p-2 text-lg cursor-pointer hover:bg-accent/80 transition-colors duration-200 flex items-center justify-center"
+                    onClick={() => {
+                      changeQty(index, -1);
+                    }}
+                  >
+                    <BiMinus />
+                  </button>
+                  <h1 className="text-lg text-secondary font-semibold min-w-[32px] text-center">
+                    {item.qty}
+                  </h1>
+                  <button
+                    className="text-white font-bold rounded-xl bg-accent p-2 text-lg cursor-pointer hover:bg-accent/80 transition-colors duration-200 flex items-center justify-center"
+                    onClick={() => {
+                      changeQty(index, 1);
+                    }}
+                  >
+                    <BiPlus />
+                  </button>
+                </div>
+
+                {/* Line total */}
+                <div className="flex items-center justify-center md:justify-end min-w-[130px]">
+                  <span className="text-lg md:text-xl text-secondary font-semibold">
+                    Rs. {(item.price * item.qty).toFixed(2)}
                   </span>
                 </div>
-              ) : (
-                <span className="text-md mx-1 text-accent font-bold">
-                  {item.price.toFixed(2)}
-                </span>
-              )}
+
+                {/* Remove button */}
+                <button
+                  className="absolute top-3 right-3 text-red-500 cursor-pointer hover:bg-red-500 hover:text-white rounded-full p-1.5 transition-colors duration-200"
+                  onClick={() => {
+                    removeFromCart(index);
+                  }}
+                >
+                  <BiTrash size={18} />
+                </button>
+              </div>
+            );
+          })}
+          {cart.length === 0 && (
+            <div className="w-full bg-white rounded-2xl shadow-md border border-gray-100 p-6 text-center text-gray-500 text-sm">
+              Your cart is empty.
             </div>
-            <div className="w-[100px] h-full flex flex-row justify-between items-center ">
-              <button
-                className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent "
-                onClick={() => {
-                  changeQty(index, -1);
-                }}
-              >
-                <BiMinus />
-              </button>
-              <h1 className="text-xl text-secondary font-semibold h-full flex items-center">
-                {item.qty}
-              </h1>
-              <button
-                className="text-white font-bold rounded-xl hover:bg-accent/80 p-2 text-xl cursor-pointer aspect-square bg-accent "
-                onClick={() => {
-                  changeQty(index, 1);
-                }}
-              >
-                <BiPlus />
-              </button>
-            </div>
-            {/* total */}
-            <div className="w-[150px] h-full flex justify-center items-center ">
-              <span className="text-xl text-secondary font-semibold">
-                Rs. {(item.price * item.qty).toFixed(2)}
-              </span>
-            </div>
-            <button
-              className="absolute text-red-600 cursor-pointer hover:bg-red-600 hover:text-white rounded-full p-2 right-[-40px]"
-              onClick={() => {
-                removeFromCart(index);
-              }}
-            >
-              <BiTrash />
-            </button>
+          )}
+        </div>
+
+        {/* RIGHT: Summary & Address */}
+        <div className="w-full h-fit bg-white rounded-2xl shadow-lg border border-gray-100 px-6 py-5 flex flex-col gap-4">
+          <h2 className="text-lg font-semibold text-secondary">
+            Order Summary
+          </h2>
+
+          <div className="flex items-center justify-between text-sm text-gray-700">
+            <span>Subtotal</span>
+            <span>Rs. {getTotal().toFixed(2)}</span>
           </div>
-        );
-      })}
+
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <span>Shipping</span>
+            <span>Calculated at checkout</span>
+          </div>
+
+          <div className="border-t border-gray-200 my-2 pt-3 flex items-center justify-between">
+            <span className="text-base font-semibold text-secondary">
+              Total
+            </span>
+            <span className="text-xl font-bold text-accent">
+              Rs. {getTotal().toFixed(2)}
+            </span>
+          </div>
+
+          <div className="mt-2 flex flex-col gap-3">
+            <input
+              type="text"
+              className="w-full h-10 px-3 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
+              placeholder="Phone Number"
+              value={phoneNumber}
+              onChange={(e) => {
+                setPhoneNumber(e.target.value);
+              }}
+            />
+            <input
+              type="text"
+              className="w-full h-10 px-3 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
+              placeholder="Address"
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            />
+          </div>
+
+          <button
+            className="mt-2 w-full text-white bg-accent px-4 py-2.5 rounded-full font-semibold hover:bg-accent/90 transition-all duration-300 shadow-md active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+            onClick={() => {
+              placeOrder();
+            }}
+            disabled={cart.length === 0 || phoneNumber === "" || address === ""}
+          >
+            Place Order
+          </button>
+
+          <p className="text-[11px] text-gray-400 mt-1">
+            By placing your order, you agree to our Terms & Conditions and
+            Privacy Policy.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
