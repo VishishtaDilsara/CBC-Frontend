@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "../components/loading";
+import UsersPage from "./admin/usersPage";
 
 export default function AdminPage() {
   const location = useLocation();
@@ -86,12 +87,7 @@ export default function AdminPage() {
           <main className="flex-1 p-8 overflow-y-auto">
             <Routes>
               <Route path="/products" element={<AdminProductsPage />} />
-              <Route
-                path="/users"
-                element={
-                  <h1 className="text-3xl font-bold">Admin Users Page</h1>
-                }
-              />
+              <Route path="/users" element={<UsersPage />} />
               <Route path="/orders" element={<AdminOrdersPage />} />
               <Route path="/add-product" element={<AddProductPage />} />
               <Route path="/edit-product" element={<EditProductPage />} />
