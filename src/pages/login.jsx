@@ -98,7 +98,7 @@ export default function LoginPage() {
           </div>
 
           {/* Password */}
-          <div className="w-full mb-6">
+          <div className="w-full mb-3">
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
@@ -112,6 +112,14 @@ export default function LoginPage() {
               className="w-full h-11 px-3 rounded-xl border border-gray-300 text-sm
                          bg-white/80 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
             />
+          </div>
+          <div className="w-full flex justify-end mb-6">
+            <span
+              className="text-xs text-accent font-semibold cursor-pointer hover:underline"
+              onClick={() => navigate("/forget")}
+            >
+              Forgot Password?
+            </span>
           </div>
 
           {/* Login button */}

@@ -59,68 +59,118 @@ export default function ForgetPasswordPage() {
   }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-[url('/login.jpg')] bg-center bg-cover ">
-      {otpSent ? (
-        <div className="w-[400px] h-[500px] bg-white shadow-2xl rounded-xl flex flex-col justify-center items-center p-4 gap-2">
-          <input
-            type="text"
-            placeholder="Enter your OTP"
-            value={otp}
-            onChange={(e) => {
-              setOtp(e.target.value);
-            }}
-            className="w-[300px] h-[40px] border-2 border-gray-200 rounded-lg px-2 focus:outline-none focus:border-secondary transition-all duration-300"
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => {
-              setNewPassword(e.target.value);
-            }}
-            className="w-[300px] h-[40px] border-2 border-gray-200 rounded-lg px-2 focus:outline-none focus:border-secondary transition-all duration-300"
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
-            className="w-[300px] h-[40px] border-2 border-gray-200 rounded-lg px-2 focus:outline-none focus:border-secondary transition-all duration-300"
-          />
-          <button
-            className="w-[300px] h-[40px] bg-accent text-white rounded-lg mt-4 hover:bg-secondary transition-all duration-300"
-            onClick={verifyOtp}
-          >
-            Verify OTP
-          </button>
-          <button
-            className="w-[300px] h-[40px] bg-accent text-white rounded-lg mt-4 hover:bg-secondary transition-all duration-300"
-            onClick={sendOtp}
-          >
-            Resend OTP
-          </button>
+    <div className="w-full h-screen bg-[url('/login.jpg')] bg-center bg-cover flex items-center justify-center">
+      {/* dark overlay */}
+      <div className="w-full h-full bg-black/40 absolute inset-0" />
+
+      <div className="relative z-10 w-full max-w-md px-6">
+        <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl px-8 py-10 flex flex-col items-center border border-gray-100">
+          {!otpSent ? (
+            <>
+              <h1 className="text-2xl font-semibold text-secondary mb-1">
+                Forgot Password
+              </h1>
+              <p className="text-sm text-gray-500 mb-6 text-center">
+                Enter your email address and we&apos;ll send you a one-time code
+                to reset your password.
+              </p>
+
+              <div className="w-full mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full h-11 px-3 rounded-xl border-2 border-gray-200 text-sm 
+                             bg-white/80 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
+                />
+              </div>
+
+              <button
+                className="w-full h-11 bg-accent text-white rounded-full mt-2 text-sm font-semibold 
+                           hover:bg-accent/90 shadow-md active:scale-95 transition-all duration-200"
+                onClick={sendOtp}
+              >
+                Send OTP
+              </button>
+            </>
+          ) : (
+            <>
+              <h1 className="text-2xl font-semibold text-secondary mb-1">
+                Reset Your Password
+              </h1>
+              <p className="text-sm text-gray-500 mb-6 text-center">
+                We&apos;ve sent an OTP to{" "}
+                <span className="font-semibold">{email}</span>. Enter it below
+                along with your new password.
+              </p>
+
+              {/* OTP */}
+              <div className="w-full mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  One-Time Password (OTP)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter the OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  className="w-full h-11 px-3 rounded-xl border-2 border-gray-200 text-sm 
+                             focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
+                />
+              </div>
+
+              {/* New Password */}
+              <div className="w-full mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full h-11 px-3 rounded-xl border-2 border-gray-200 text-sm 
+                             focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
+                />
+              </div>
+
+              {/* Confirm Password */}
+              <div className="w-full mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Confirm Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full h-11 px-3 rounded-xl border-2 border-gray-200 text-sm 
+                             focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
+                />
+              </div>
+
+              <button
+                className="w-full h-11 bg-accent text-white rounded-full text-sm font-semibold 
+                           hover:bg-accent/90 shadow-md active:scale-95 transition-all duration-200"
+                onClick={verifyOtp}
+              >
+                Verify OTP & Reset Password
+              </button>
+
+              <button
+                className="w-full h-10 mt-3 text-xs font-semibold text-accent hover:underline"
+                onClick={sendOtp}
+              >
+                Resend OTP
+              </button>
+            </>
+          )}
         </div>
-      ) : (
-        <div className="w-[400px] h-[500px] bg-white shadow-2xl rounded-xl flex flex-col justify-center items-center p-4">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            className="w-[300px] h-[40px] border-2 border-gray-200 rounded-lg px-2 focus:outline-none focus:border-secondary transition-all duration-300"
-          />
-          <button
-            className="w-[300px] h-[40px] bg-accent text-white rounded-lg mt-4 hover:bg-secondary transition-all duration-300"
-            onClick={sendOtp}
-          >
-            Send OTP
-          </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
