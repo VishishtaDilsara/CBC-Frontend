@@ -16,6 +16,9 @@ export default function ContactsPage() {
       })
       .then((res) => {
         toast.success("Message sent successfully");
+        setEmail("");
+        setName("");
+        setMessage("");
       })
       .catch((err) => {
         toast.error("Error sending message");
@@ -82,6 +85,7 @@ export default function ContactsPage() {
                   setName(e.target.value);
                 }}
                 placeholder="Your Name"
+                value={name}
                 className="w-full h-12 px-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
               />
 
@@ -91,6 +95,7 @@ export default function ContactsPage() {
                   setEmail(e.target.value);
                 }}
                 placeholder="Email Address"
+                value={email}
                 className="w-full h-12 px-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
               />
 
@@ -100,6 +105,7 @@ export default function ContactsPage() {
                   setMessage(e.target.value);
                 }}
                 placeholder="Message"
+                value={message}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
               ></textarea>
 
