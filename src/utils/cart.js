@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export function getCart() {
   let cart = localStorage.getItem("cart");
 
@@ -47,6 +49,7 @@ export function addToCart(product, qty) {
     }
   }
   localStorage.setItem("cart", JSON.stringify(cart));
+  toast.success("Product : " + product.name + " added to cart.");
 }
 
 export function getTotal() {
