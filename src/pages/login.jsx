@@ -22,7 +22,7 @@ export default function LoginPage() {
           const token = res.data.token;
           localStorage.setItem("token", token);
           if (res.data.role === "admin") {
-            navigate("/admin/");
+            navigate("/admin/products");
           } else {
             navigate("/");
           }
@@ -43,7 +43,7 @@ export default function LoginPage() {
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
       if (response.data.role === "admin") {
-        navigate("/admin/");
+        navigate("/admin/products");
       } else {
         navigate("/");
       }
