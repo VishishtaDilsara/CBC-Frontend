@@ -8,17 +8,19 @@ export default function HomePageDefault() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/api/products")
-      .then((res) => {
-        setProducts(res.data || []);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setIsLoading(false);
-      });
-  }, []);
+    if (isLoading) {
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/products")
+        .then((res) => {
+          setProducts(res.data || []);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setIsLoading(false);
+        });
+    }
+  }, [isLoading]);
 
   return (
     <div className="w-full min-h-screen bg-primary flex flex-col text-secondary">
@@ -85,7 +87,6 @@ export default function HomePageDefault() {
             ) : products.length === 0 ? (
               <p className="text-center text-gray-500">No products found.</p>
             ) : (
-              // ✅ One carousel, pass the entire array
               <ProductCarousel products={products} />
             )}
           </div>

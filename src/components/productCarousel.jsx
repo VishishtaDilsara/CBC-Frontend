@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function ProductCarousel({ products }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,9 +28,10 @@ export default function ProductCarousel({ products }) {
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {visibleProducts.map((product, index) => (
-          <div
-            key={product.id || index}
-            className="bg-primary rounded-xl shadow p-5 hover:-translate-y-1 transition cursor-pointer"
+          <Link
+            key={product.productId}
+            to={`/overview/${product.productId}`}
+            className="bg-primary rounded-xl shadow p-5 hover:-translate-y-1 transition cursor-pointer block"
           >
             <div className="w-full h-48 rounded-lg overflow-hidden bg-gray-200">
               <img
@@ -54,7 +56,7 @@ export default function ProductCarousel({ products }) {
             <p className="mt-3 font-semibold text-accent">
               Rs. {product.price}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
 
