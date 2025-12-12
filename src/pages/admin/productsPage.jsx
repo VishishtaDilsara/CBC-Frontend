@@ -9,34 +9,50 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState(sampleProducts);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoading === true) {
+    if (isLoading) {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/api/products")
         .then((res) => {
-          console.log(res.data);
           setProducts(res.data);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          toast.error("Error fetching products");
           setIsLoading(false);
         });
     }
   }, [isLoading]);
 
+  function openDeleteModal(productId) {
+    setDeleteProductId(productId);
+    setShowDeleteConfirm(true);
+  }
+
+  function closeDeleteModal() {
+    setShowDeleteConfirm(false);
+    setDeleteProductId(null);
+  }
+
   function deleteProduct(productId) {
     const token = localStorage.getItem("token");
-    if (token == null) {
+    if (!token) {
       toast.error("Please login first");
       return;
     }
+
     axios
       .delete(import.meta.env.VITE_BACKEND_URL + "/api/products/" + productId, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
+        headers: { Authorization: "Bearer " + token },
       })
       .then(() => {
-        toast.success("Product Deleted successfully");
+        toast.success("Product deleted successfully");
+        closeDeleteModal();
         setIsLoading(true);
       })
       .catch((e) => {
@@ -93,6 +109,7 @@ export default function AdminProductsPage() {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {products.map((item, index) => (
                     <tr
@@ -125,11 +142,12 @@ export default function AdminProductsPage() {
                         <div className="flex justify-center items-center gap-3">
                           <button
                             type="button"
-                            onClick={() => deleteProduct(item.productId)}
+                            onClick={() => openDeleteModal(item.productId)}
                             className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"
                           >
                             <FaTrash className="text-red-500 text-[18px]" />
                           </button>
+
                           <button
                             type="button"
                             onClick={() =>
@@ -164,6 +182,41 @@ export default function AdminProductsPage() {
           </div>
         )}
       </div>
+
+      {showDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={closeDeleteModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg w-[320px] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+              Confirm Delete
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure you want to delete this product?
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={closeDeleteModal}
+                className="px-4 py-2 rounded-md border text-gray-600 hover:bg-gray-100 transition"
+              >
+                No
+              </button>
+
+              <button
+                onClick={() => deleteProduct(deleteProductId)}
+                className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,6 +8,10 @@ export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState(null);
+  const [deleteUserLabel, setDeleteUserLabel] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +19,6 @@ export default function UsersPage() {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/api/users/all")
         .then((res) => {
-          console.log(res.data);
           setUsers(res.data || []);
           setIsLoading(false);
         })
@@ -26,6 +29,20 @@ export default function UsersPage() {
         });
     }
   }, [isLoading]);
+
+  function openDeleteModal(user) {
+    setDeleteUserId(user._id);
+    setDeleteUserLabel(
+      user.email || `${user.firstName || ""} ${user.lastName || ""}`.trim()
+    );
+    setShowDeleteConfirm(true);
+  }
+
+  function closeDeleteModal() {
+    setShowDeleteConfirm(false);
+    setDeleteUserId(null);
+    setDeleteUserLabel("");
+  }
 
   async function deleteUser(userId) {
     const token = localStorage.getItem("token");
@@ -43,8 +60,10 @@ export default function UsersPage() {
           },
         }
       );
+
       toast.success("User deleted successfully");
-      setIsLoading(true); // trigger reload
+      closeDeleteModal();
+      setIsLoading(true);
     } catch (e) {
       console.error(e);
       toast.error(e?.response?.data?.message || "Something went wrong");
@@ -99,6 +118,7 @@ export default function UsersPage() {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody>
                   {users.map((item) => (
                     <tr
@@ -106,12 +126,15 @@ export default function UsersPage() {
                       className="border-b border-gray-100 hover:bg-primary/60 transition"
                     >
                       <td className="py-3 px-4 text-gray-700">{item.email}</td>
+
                       <td className="py-3 px-4 text-secondary font-medium">
                         {item.firstName}
                       </td>
+
                       <td className="py-3 px-4 text-secondary font-medium">
                         {item.lastName}
                       </td>
+
                       <td className="py-3 px-4">
                         <div className="w-[50px] h-[50px] rounded-md overflow-hidden border border-gray-200">
                           <img
@@ -121,18 +144,21 @@ export default function UsersPage() {
                           />
                         </div>
                       </td>
+
                       <td className="py-3 px-4 text-secondary font-medium">
                         {item.role}
                       </td>
+
                       <td className="py-3 px-4">
                         <div className="flex justify-center items-center gap-3">
                           <button
                             type="button"
-                            onClick={() => deleteUser(item._id)}
+                            onClick={() => openDeleteModal(item)}
                             className="p-2 rounded-full bg-red-50 hover:bg-red-100 transition"
                           >
                             <FaTrash className="text-red-500 text-[18px]" />
                           </button>
+
                           <button
                             type="button"
                             onClick={() =>
@@ -167,6 +193,47 @@ export default function UsersPage() {
           </div>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+          onClick={closeDeleteModal}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg w-[340px] p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">
+              Confirm Delete
+            </h2>
+
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure you want to delete{" "}
+              <span className="font-semibold text-gray-800">
+                {deleteUserLabel || "this user"}
+              </span>
+              ?
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={closeDeleteModal}
+                className="px-4 py-2 rounded-md border text-gray-600 hover:bg-gray-100 transition"
+              >
+                No
+              </button>
+
+              <button
+                onClick={() => deleteUser(deleteUserId)}
+                className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

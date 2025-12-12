@@ -16,6 +16,7 @@ export default function AdminPage() {
   const location = useLocation();
   const path = location.pathname;
   const [status, setStatus] = useState("loading");
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -56,6 +57,13 @@ export default function AdminPage() {
     `;
   }
 
+  function handleLogout() {
+    toast.success("Logout successful");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  }
+
   return (
     <div className="w-full h-screen flex bg-gray-50">
       {status == "loading" || status == "unauthenticated" ? (
@@ -83,7 +91,49 @@ export default function AdminPage() {
             <Link className={getClass("add-product")} to="/admin/add-product">
               Add Product
             </Link>
+            <button
+              onClick={() => setShowLogoutConfirm(true)}
+              className="
+    mt-auto mx-4 
+    flex items-center justify-center
+    rounded-md px-4 py-3
+    font-semibold text-red-600
+    border border-red-200
+    hover:bg-red-50 hover:border-red-300
+    transition
+  "
+            >
+              Logout
+            </button>
           </aside>
+          {showLogoutConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="bg-white rounded-lg shadow-lg w-[320px] p-6">
+                <h2 className="text-lg font-semibold text-gray-800 mb-2">
+                  Confirm Logout
+                </h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Are you sure you want to log out?
+                </p>
+
+                <div className="flex justify-end gap-3">
+                  <button
+                    onClick={() => setShowLogoutConfirm(false)}
+                    className="px-4 py-2 rounded-md border text-gray-600 hover:bg-gray-100 transition"
+                  >
+                    No
+                  </button>
+
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition"
+                  >
+                    Yes, Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Content Area */}
           <main className="flex-1 p-8 overflow-y-auto">
