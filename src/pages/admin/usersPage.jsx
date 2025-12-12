@@ -15,6 +15,7 @@ export default function UsersPage() {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/api/users/all")
         .then((res) => {
+          console.log(res.data);
           setUsers(res.data || []);
           setIsLoading(false);
         })

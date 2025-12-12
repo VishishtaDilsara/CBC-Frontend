@@ -4,7 +4,7 @@ export default function ProductCard({ product }) {
   return (
     <Link
       to={"/overview/" + product.productId}
-      className="w-[320px] h-[480px] bg-white rounded-2xl shadow-md 
+      className="w-[320px] h-[550px] bg-white rounded-2xl shadow-md 
                  hover:shadow-2xl border border-gray-100 overflow-hidden 
                  flex flex-col transition-all duration-300 hover:-translate-y-2"
     >

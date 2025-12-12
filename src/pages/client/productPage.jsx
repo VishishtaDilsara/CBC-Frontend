@@ -18,10 +18,14 @@ export default function ProductPage() {
   }, [isLoading]);
 
   return (
-    <div className="w-full min-h-screen bg-primary py-10 flex flex-wrap justify-center gap-6 px-4">
+    <div className="w-full h-full bg-primary py-10 flex flex-wrap justify-center gap-6 px-4">
       {products.map((product) => {
         return <ProductCard key={product.productId} product={product} />;
       })}
+      {/* Footer */}
+      <footer className="w-full py-6 text-center text-gray-500 text-sm border-t border-gray-300 bg-white">
+        © {new Date().getFullYear()} BeautyGlow — All Rights Reserved.
+      </footer>
     </div>
   );
 }

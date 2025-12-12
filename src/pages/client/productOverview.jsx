@@ -61,7 +61,7 @@ export default function ProductOverviewPage() {
             <div className="w-full md:w-[50%] flex justify-center items-center bg-white">
               <div className="w-full max-w-md px-6 md:px-8 py-8 flex flex-col gap-5">
                 {/* Desktop title + tags */}
-                <div className="hidden md:block">
+                <div className="hidden md:block pt-8">
                   <h1 className="text-3xl font-semibold text-secondary">
                     {product.name}
                   </h1>
@@ -90,7 +90,7 @@ export default function ProductOverviewPage() {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 leading-relaxed text-justify">
                   {product.description}
                 </p>
 

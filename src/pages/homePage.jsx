@@ -63,7 +63,7 @@ export default function HomePageDefault() {
         <div className="flex-1 w-full">
           <div className="w-full h-[350px] md:h-[450px] bg-white rounded-3xl shadow-lg overflow-hidden">
             <img
-              src="/cosmetic1.jpg"
+              src="/about2.jpg"
               alt="Cosmetic Model"
               className="w-full h-full object-cover"
             />
