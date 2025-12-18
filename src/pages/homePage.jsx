@@ -45,7 +45,7 @@ export default function HomePageDefault() {
           <div className="mt-8 flex gap-4">
             <Link
               to="/products"
-              className="px-6 py-3 rounded-full bg-accent text-white font-semibold shadow-md hover:bg-accent/90 transition"
+              className="px-6 py-3 rounded-full bg-red-500 text-white font-semibold shadow-md hover:bg-accent/90 transition"
             >
               Shop Now
             </Link>
