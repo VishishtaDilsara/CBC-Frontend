@@ -1,24 +1,26 @@
-FROM node:alpine3.18 as build
-
-# Declare build time environment variables
-ARG REACT_APP_NODE_ENV
-ARG REACT_APP_SERVER_BASE_URL
-
-# Set default values for environment variables
-ENV REACT_APP_NODE_ENV=$REACT_APP_NODE_ENV
-ENV REACT_APP_SERVER_BASE_URL=$REACT_APP_SERVER_BASE_URL
-
-# Build App
+FROM node:20-alpine AS build
 WORKDIR /app
-COPY package.json .
-RUN npm install
+
+COPY package*.json ./
+RUN npm ci
+
 COPY . .
+
+ARG VITE_BACKEND_URL
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_KEY
+
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+ENV VITE_SUPABASE_KEY=$VITE_SUPABASE_KEY
+
 RUN npm run build
 
-# Serve with Nginx
-FROM nginx:1.23-alpine
+FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
-COPY --from=build /app/build .
+
+COPY --from=build /app/dist .
+
 EXPOSE 80
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+CMD ["nginx", "-g", "daemon off;"]
